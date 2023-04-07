@@ -1,175 +1,65 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { rootState } from "./";
-import { GIRD_SIZE } from "../config";
 
-export interface UiState {
-  numArr: number[][];
-  history: number[][][];
+export interface TileMeta {
+  id: number;
+  position: [number, number];
+  value: number;
 }
 
+export interface UiState {
+  tiles: {
+    [key: number]: TileMeta;
+  };
+  byIds: number[];
+  hasChanged: boolean;
+  inMotion: boolean;
+}
 
 const initialState: UiState = {
-  numArr: [],
-  history: []
+  tiles: {},
+  byIds: [],
+  hasChanged: false,
+  inMotion: false,
 }
 
 export const uiSlice = createSlice({
   name: "ui",
   initialState: initialState,
   reducers: {
-    initNumArr: (state: UiState, action: PayloadAction<number[][]>) => {
-      state.numArr = action.payload;
-      state.history.push(action.payload);
+    createTile: (state: UiState, action: PayloadAction<TileMeta>) => {
+      state.tiles[action.payload.id] = action.payload;
+      state.byIds.push(action.payload.id);
+      state.hasChanged = false;
     },
-    newNum: (state: UiState) => {
-      // find empty grid == -1
-      const emptyGrids: number[][] = [];
-      for (let i = 0; i < GIRD_SIZE; i++) {
-        for (let j = 0; j < GIRD_SIZE; j++) {
-          if (state.numArr[i][j] === -1) {
-            emptyGrids.push([i, j]);
-          }
-        }
-      }
-      // random select one
-      const randomIndex = Math.floor(Math.random() * emptyGrids.length);
-      const randomGrid = emptyGrids[randomIndex];
-      console.log(randomGrid);
-      // set value
-      state.numArr[randomGrid[0]][randomGrid[1]] = Math.random() > 0.5 ? 2 : 4;
-      state.history.push(state.numArr);
+    updateTile: (state: UiState, action: PayloadAction<TileMeta>) => {
+      state.tiles[action.payload.id] = action.payload;
+      state.hasChanged = true;
     },
-    undo: (state: UiState) => {
-      if (state.history.length > 1) {
-        state.history.pop();
-        state.numArr = state.history[state.history.length - 1];
-      }
+    mergeTile: (state: UiState, action: PayloadAction<{ source: TileMeta, destination: TileMeta }>) => {
+      const { source, destination } = action.payload;
+      const { [source.id]: sourceTile, [destination.id]: destinationTile, ...restTiles } = state.tiles;
+      state.tiles = {
+        ...restTiles,
+        [destination.id]: {
+          id: destination.id,
+          value: source.value + destination.value,
+          position: destination.position,
+        },
+      };
+      state.byIds = state.byIds.filter(id => id !== source.id);
+      state.hasChanged = true;
     },
-    moveUp: (state: UiState) => {
-      for (let j = 0; j < GIRD_SIZE; j++) {
-        let lastMergedIndex = -1;  // uppest merged grid
-        for (let i = 1; i < GIRD_SIZE; i++) {
-          // uppest unempty grid
-          if (state.numArr[i][j] === -1) continue;
-
-          let merge = false;
-          let move = false;
-          for (let k = lastMergedIndex + 1; k < i; k++) {
-            if (state.numArr[k][j] === -1) {
-              // uppest empty grid
-              state.numArr[k][j] = state.numArr[i][j];
-              state.numArr[i][j] = -1;
-              move = true;
-              break;
-            }
-            if (!merge && state.numArr[k][j] === state.numArr[i][j]) {
-              // merge grid
-              state.numArr[k][j] += state.numArr[i][j];
-              state.numArr[i][j] = -1;
-              lastMergedIndex = k;
-              merge = true;
-            }
-          }
-          if (!merge && !move) {
-            lastMergedIndex = i - 1;
-          }
-        }
-      }
+    startMove: (state: UiState) => {
+      state.inMotion = true;
     },
-    moveDown: (state: UiState) => {
-      for (let j = 0; j < GIRD_SIZE; j++) {
-        let lastMergedIndex = GIRD_SIZE;  // downest merged grid
-        for (let i = GIRD_SIZE - 2; i >= 0; i--) {
-          // downest unempty grid
-          if (state.numArr[i][j] === -1) continue;
-
-          let merge = false;
-          let move = false;
-          for (let k = lastMergedIndex - 1; k > i; k--) {
-            if (state.numArr[k][j] === -1) {
-              // downest empty grid
-              state.numArr[k][j] = state.numArr[i][j];
-              state.numArr[i][j] = -1;
-              move = true;
-              break;
-            }
-            if (!merge && state.numArr[k][j] === state.numArr[i][j]) {
-              // merge grid
-              state.numArr[k][j] += state.numArr[i][j];
-              state.numArr[i][j] = -1;
-              lastMergedIndex = k;
-              merge = true;
-            }
-          }
-          if (!merge && !move) {
-            lastMergedIndex = i + 1;
-          }
-        }
-      }
-    },
-    moveLeft: (state: UiState) => {
-      for (let i = 0; i < GIRD_SIZE; i++) {
-        let lastMergedIndex = -1;  // leftest merged grid
-        for (let j = 1; j < GIRD_SIZE; j++) {
-          // leftest unempty grid
-          if (state.numArr[i][j] === -1) continue;
-
-          let merge = false;
-          let move = false;
-          for (let k = lastMergedIndex + 1; k < j; k++) {
-            if (state.numArr[i][k] === -1) {
-              // leftest empty grid
-              state.numArr[i][k] = state.numArr[i][j];
-              state.numArr[i][j] = -1;
-              move = true;
-              break;
-            }
-            if (!merge && state.numArr[i][k] === state.numArr[i][j]) {
-              // merge grid
-              state.numArr[i][k] += state.numArr[i][j];
-              state.numArr[i][j] = -1;
-              lastMergedIndex = k;
-              merge = true;
-            }
-          }
-          if (!merge && !move) {
-            lastMergedIndex = j - 1;
-          }
-        }
-      }
-    },
-    moveRight: (state: UiState) => {
-      for (let i = 0; i < GIRD_SIZE; i++) {
-        let lastMergedIndex = GIRD_SIZE;  // rightest merged grid
-        for (let j = GIRD_SIZE - 2; j >= 0; j--) {
-          // rightest unempty grid
-          if (state.numArr[i][j] === -1) continue;
-
-          let merge = false;
-          let move = false;
-          for (let k = lastMergedIndex - 1; k > j; k--) {
-            if (state.numArr[i][k] === -1) {
-              // rightest empty grid
-              state.numArr[i][k] = state.numArr[i][j];
-              state.numArr[i][j] = -1;
-              move = true;
-              break;
-            }
-            if (!merge && state.numArr[i][k] === state.numArr[i][j]) {
-              // merge grid
-              state.numArr[i][k] += state.numArr[i][j];
-              state.numArr[i][j] = -1;
-              lastMergedIndex = k;
-              merge = true;
-            }
-          }
-          if (!merge && !move) {
-            lastMergedIndex = j + 1;
-          }
-        }
-      }
+    endMove: (state: UiState) => {
+      state.inMotion = false;
     }
   }
 });
 
-export const selectNumArr = (state: rootState) => state.ui.numArr;
+export const selectTiles = (state: rootState) => state.ui.tiles;
+export const selectByIds = (state: rootState) => state.ui.byIds;
+export const selectHasChanged = (state: rootState) => state.ui.hasChanged;
+export const selectInMotion = (state: rootState) => state.ui.inMotion;

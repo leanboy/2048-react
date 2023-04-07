@@ -15,36 +15,8 @@ body {
 
 .App {
   max-width: $pixel-size * 60;
-  margin: $pixel-size * 0 auto;
-
-  .header {
-    display: flex;
-    width: 100%;
-
-    > div {
-      flex: 1;
-    }
-
-    .button {
-      float: right;
-      margin: $pixel-size * 3.25 $pixel-size * 0;
-    }
-  }
+  margin: $pixel-size * 10 auto;
 }
-
-h1 {
-  font-size: 4.5 * $pixel-size;
-  line-height: 5.75 * $pixel-size;
-}
-
-a {
-  color: #776e65;
-
-  &:hover {
-    text-decoration: none;
-  }
-}
-
 
 .board {
   position: relative;
@@ -91,14 +63,4 @@ a {
     border-radius: $pixel-size * 0.5;
     background: rgba(238, 228, 218, 0.35);
   }
-}
-
-.button {
-  background: #8f7a66;
-  border: $pixel-size solid #8f7a66;
-  border-radius: $pixel-size * 0.5;
-  font-size: $pixel-size * 2;
-  line-height: $pixel-size * 3;
-  font-weight: bold;
-  color: #f9f6f2;
 }

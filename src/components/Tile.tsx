@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { usePrevProps } from "../hooks/usePrevProps";
 import { tileCount , containerWidth } from "../config";
+import { Box } from "@mui/material";
 
 interface TileProps {
   value: number;
@@ -36,8 +37,8 @@ export const Tile = (props: TileProps) => {
   }
 
   return (
-    <div className="tile" style={style}>
+    <Box className="tile" style={style}>
       {value}
-    </div>
+    </Box>
   );
 }

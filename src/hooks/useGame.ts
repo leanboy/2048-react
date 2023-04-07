@@ -106,7 +106,7 @@ export const useGame = () => {
       let prevTile: TileMeta | null = null;
       let mergeCount = 0;
 
-      availableTileIds.forEach((tileId, noEmptyTileIndex) => {
+      availableTileIds.forEach((tileId, nonEmptyTileIndex) => {
         const curTile = tiles[tileId];
 
         if (prevTile && prevTile.value === curTile.value) {
@@ -127,7 +127,7 @@ export const useGame = () => {
           position: indexToPosition(
             calculateFirstFreeIndex(
               index,
-              noEmptyTileIndex,
+              nonEmptyTileIndex,
               mergeCount,
               tileCount - 1
             )

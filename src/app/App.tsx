@@ -1,13 +1,14 @@
 import React from 'react';
 import { Game } from "../components/Game";
-import { Button } from "../components/Button";
+import { ButtonGroup } from "../components/ButtonGroup";
+import {Stack} from "@mui/material";
 
 function App() {
   return (
-    <div className="App">
-      <Button></Button>
+    <Stack className="App" spacing={5}>
+      <ButtonGroup />
       <Game />
-    </div>
+    </Stack>
   );
 }
 

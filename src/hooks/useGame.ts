@@ -196,7 +196,7 @@ export const useGame = () => {
       maxIndexInRow: number
     ) => {
       return (
-        tileIndex * tileCount + maxIndexInRow - tileInRowIndex - howManyMerges
+        tileIndex * tileCount + maxIndexInRow - tileInRowIndex + howManyMerges
       );
     };
 
@@ -252,7 +252,7 @@ export const useGame = () => {
       maxIndexInColumn: number
     ) => {
       return (
-        tileIndex + tileCount * (maxIndexInColumn - tileInColumnIndex - howManyMerges)
+        tileIndex + tileCount * (maxIndexInColumn - tileInColumnIndex + howManyMerges)
       );
     };
 

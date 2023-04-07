@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { useGame } from "../hooks/useGame";
 import { Board } from "./Board";
+import { useThrottledCallback } from "use-debounce";
+import { animationDuration } from "../config";
 
 export const Game = () => {
   const [tiles, moveLeft, moveRight, moveUp, moveDown] = useGame();
 
   const handleKeyDown = (e: KeyboardEvent) => {
-    e.preventDefault();
-
     switch (e.code) {
       case "ArrowLeft":
         moveLeft();
@@ -24,14 +24,19 @@ export const Game = () => {
     }
   };
 
+  const throttledHandleKeyDown = useThrottledCallback(
+    handleKeyDown,
+    animationDuration,
+    { leading: true, trailing: false }
+  );
 
   React.useEffect(() => {
-    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keydown", throttledHandleKeyDown);
 
     return () => {
-      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keydown", throttledHandleKeyDown);
     };
-  }, [handleKeyDown]);
+  }, [throttledHandleKeyDown]);
 
   return <Board tiles={tiles} />;
 }

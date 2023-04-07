@@ -1,6 +1,6 @@
 const pixelSize = 8
 
-export const animationDuration = 500;
+export const animationDuration = 200;
 
 export const tileCount = 4;
 

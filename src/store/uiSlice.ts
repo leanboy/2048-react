@@ -20,6 +20,7 @@ export interface TileState {
 export interface UiState {
   tileState: TileState;
   tileCount: number;
+  maxGeneratedValue: number;
   history: TileState[];
   initial: boolean;
 }
@@ -35,6 +36,7 @@ const initialTileState: TileState = {
 const initialState: UiState = {
   tileState: initialTileState,
   tileCount: 4,
+  maxGeneratedValue: 4,
   history: [],
   initial: true,
 }
@@ -45,6 +47,13 @@ export const uiSlice = createSlice({
   reducers: {
     changeTileCount: (state: UiState, action: PayloadAction<number>) => {
       state.tileCount = action.payload;
+
+      state.tileState = initialTileState;
+      state.history = [];
+      state.initial = true;
+    },
+    changeMaxGeneratedValue: (state: UiState, action: PayloadAction<number>) => {
+      state.maxGeneratedValue = action.payload;
 
       state.tileState = initialTileState;
       state.history = [];
@@ -98,6 +107,7 @@ export const uiSlice = createSlice({
 });
 
 export const selectTileCount = (state: rootState) => state.ui.tileCount;
+export const selectMaxGeneratedValue = (state: rootState) => state.ui.maxGeneratedValue;
 export const selectTiles = (state: rootState) => state.ui.tileState.tiles;
 export const selectByIds = (state: rootState) => state.ui.tileState.byIds;
 export const selectHasChanged = (state: rootState) => state.ui.tileState.hasChanged;

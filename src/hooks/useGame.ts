@@ -9,7 +9,8 @@ import {
   selectHasChanged,
   selectInMotion,
   selectInitial,
-  selectTileCount
+  selectTileCount,
+  selectMaxGeneratedValue
 } from "../store/uiSlice";
 
 export const useGame = () => {
@@ -22,6 +23,7 @@ export const useGame = () => {
   const inMotion = useSelector(selectInMotion);
   const initial = useSelector(selectInitial);
   const tileCount = useSelector(selectTileCount);
+  const maxGeneratedValue = useSelector(selectMaxGeneratedValue);
 
   const createTile = React.useCallback(
     (position: [number, number], value: number) => {
@@ -67,15 +69,22 @@ export const useGame = () => {
     }, [] as [number, number][]);
   }, [retrieveTileMap]);
 
-  const generateRandomTile = React.useCallback(() => {
+  const generateRandomTile = React.useCallback((maxVal = 2) => {
     const emptyTiles = findEmptyTile();
 
     if (emptyTiles.length > 0) {
       const randomIndex = Math.floor(Math.random() * emptyTiles.length);
       const randomPosition = emptyTiles[randomIndex];
-      const value = Math.random() > 0.5 ? 2 : 4;
+      const valueArr = [];
+      for (let i = 1; i < 10; i++) {
+        const value = Math.pow(2, i);
+        if (value <= maxVal) {
+          valueArr.push(value);
+        }
+      }
+      const randomValue = valueArr[Math.floor(Math.random() * valueArr.length)];
 
-      createTile(randomPosition, value);
+      createTile(randomPosition, randomValue);
     }
   }, [findEmptyTile, createTile]);
 
@@ -263,14 +272,14 @@ export const useGame = () => {
 
   React.useEffect(() => {
     if (initial) {
-      generateRandomTile();
+      generateRandomTile(2);
       dispatch(uiSlice.actions.changeInitial(false));
     }
   }, [generateRandomTile, initial, dispatch]);
 
   React.useEffect(() => {
     if (!inMotion && hasChanged) {
-      generateRandomTile();
+      generateRandomTile(maxGeneratedValue);
     }
   }, [inMotion, hasChanged, generateRandomTile]);
 

@@ -14,6 +14,7 @@ export interface TileState {
   byIds: number[];
   hasChanged: boolean;
   inMotion: boolean;
+  score: number;
 }
 
 export interface UiState {
@@ -27,6 +28,7 @@ const initialTileState: TileState = {
   byIds: [],
   hasChanged: false,
   inMotion: false,
+  score: 0,
 }
 
 const initialState: UiState = {
@@ -61,6 +63,7 @@ export const uiSlice = createSlice({
         },
       };
       state.tileState.byIds = state.tileState.byIds.filter(id => id !== source.id);
+      state.tileState.score += source.value;
     },
     startMove: (state: UiState) => {
       state.tileState.inMotion = true;
@@ -90,3 +93,4 @@ export const selectByIds = (state: rootState) => state.ui.tileState.byIds;
 export const selectHasChanged = (state: rootState) => state.ui.tileState.hasChanged;
 export const selectInMotion = (state: rootState) => state.ui.tileState.inMotion;
 export const selectInitial = (state: rootState) => state.ui.initial;
+export const selectScore = (state: rootState) => state.ui.tileState.score;

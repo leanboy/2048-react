@@ -5,7 +5,7 @@ import {Stack} from "@mui/material";
 
 function App() {
   return (
-    <Stack className="App" spacing={5}>
+    <Stack className="App" spacing={5} justifyContent={'center'} alignItems={'center'}>
       <ButtonGroup />
       <Game />
     </Stack>

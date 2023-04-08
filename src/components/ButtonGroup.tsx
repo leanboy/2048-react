@@ -1,13 +1,17 @@
 import * as React from 'react';
 import { uiSlice } from "../store/uiSlice";
 import { useDispatch } from "react-redux";
-import { Button, Stack } from "@mui/material";
+import { Button, Stack, Typography } from "@mui/material";
 
 export const ButtonGroup = () => {
   const dispatch = useDispatch();
 
-  const handleClick = () => {
+  const handleUndoClick = () => {
     dispatch(uiSlice.actions.undo());
+  }
+
+  const handleRestartClick = () => {
+    dispatch(uiSlice.actions.reset());
   }
 
   return (
@@ -15,18 +19,22 @@ export const ButtonGroup = () => {
       <Button
         className="button"
         variant="contained"
-        onClick={handleClick}
+        onClick={handleUndoClick}
         sx={{backgroundColor: "#8f7a66", color: "f9f6f2", textTransform: 'none', "&:hover": {backgroundColor: "#776e65"}}}
       >
-        Undo
+        <Typography fontWeight={'bold'}>
+          Undo
+        </Typography>
       </Button>
       <Button
         className="button"
         variant="contained"
-        onClick={handleClick}
+        onClick={handleRestartClick}
         sx={{backgroundColor: "#8f7a66", color: "f9f6f2", textTransform: 'none', "&:hover": {backgroundColor: "#776e65"}}}
       >
-        Restart
+        <Typography fontWeight={'bold'}>
+          Restart
+        </Typography>
       </Button>
     </Stack>
   );

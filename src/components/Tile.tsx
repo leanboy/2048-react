@@ -30,10 +30,12 @@ export const Tile = (props: TileProps) => {
   }
 
   const style = {
+    zIndex,
     top: positionToPixels(position[1]),
     left: positionToPixels(position[0]),
     transform: `scale(${scale})`,
-    zIndex,
+    backgroundColor: `hsl(33, 50%, ${100 - Math.log2(value) * 9}%)`,
+    color: value <= 32 ? "#776e65" : "#f9f6f2",
   }
 
   return (

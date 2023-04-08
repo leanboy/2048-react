@@ -34,18 +34,16 @@ body {
 
 .tile {
   position: absolute;
-  width: $pixel-size *12.5;
-  height: $pixel-size *12.5;
-  margin: $pixel-size *1;
-  border-radius: $pixel-size *0.5;
-  background-color: #eee4da;
-  color: #776e65;
+  width: $pixel-size * 12.5;
+  height: $pixel-size * 12.5;
+  margin: $pixel-size * 1;
+  border-radius: $pixel-size * 0.5;
   font-weight: bold;
   text-align: center;
   font-size: $pixel-size *6;
   line-height: 2.1;
   transition-property: left, top, transform;
-  transition-duration: 250ms, 250ms, 100ms;
+  transition-duration: 200ms, 200ms, 200ms;
   transform: scale(1);
 }
 

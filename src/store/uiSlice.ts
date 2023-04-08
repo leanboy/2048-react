@@ -17,18 +17,22 @@ export interface TileState {
 }
 
 export interface UiState {
-  tileState: TileState
+  tileState: TileState;
   history: TileState[];
+  initial: boolean;
+}
+
+const initialTileState: TileState = {
+  tiles: {},
+  byIds: [],
+  hasChanged: false,
+  inMotion: false,
 }
 
 const initialState: UiState = {
-  tileState: {
-    tiles: {},
-    byIds: [],
-    hasChanged: false,
-    inMotion: false,
-  },
+  tileState: initialTileState,
   history: [],
+  initial: true,
 }
 
 export const uiSlice = createSlice({
@@ -57,7 +61,6 @@ export const uiSlice = createSlice({
         },
       };
       state.tileState.byIds = state.tileState.byIds.filter(id => id !== source.id);
-      state.tileState.hasChanged = true;
     },
     startMove: (state: UiState) => {
       state.tileState.inMotion = true;
@@ -66,10 +69,18 @@ export const uiSlice = createSlice({
       state.tileState.inMotion = false;
     },
     undo: (state: UiState) => {
-      if (state.history.length > 2) {
+      if (state.history.length > 1) {
         state.history.pop();
         state.tileState = state.history[state.history.length - 1];
       }
+    },
+    changeInitial: (state: UiState, action: PayloadAction<boolean>) => {
+      state.initial = action.payload;
+    },
+    reset: (state: UiState) => {
+      state.tileState = initialTileState;
+      state.history = [];
+      state.initial = true;
     }
   }
 });
@@ -78,3 +89,4 @@ export const selectTiles = (state: rootState) => state.ui.tileState.tiles;
 export const selectByIds = (state: rootState) => state.ui.tileState.byIds;
 export const selectHasChanged = (state: rootState) => state.ui.tileState.hasChanged;
 export const selectInMotion = (state: rootState) => state.ui.tileState.inMotion;
+export const selectInitial = (state: rootState) => state.ui.initial;

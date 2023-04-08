@@ -7,12 +7,11 @@ import {
   selectTiles,
   selectByIds,
   selectHasChanged,
-  selectInMotion
+  selectInMotion,
+  selectInitial
 } from "../store/uiSlice";
-import {useEffect} from "react";
 
 export const useGame = () => {
-  const isInitalRender = React.useRef(true);
   const [nextId] = useIds();
   const dispatch = useDispatch();
 
@@ -20,6 +19,7 @@ export const useGame = () => {
   const byIds = useSelector(selectByIds);
   const hasChanged = useSelector(selectHasChanged);
   const inMotion = useSelector(selectInMotion);
+  const initial = useSelector(selectInitial);
 
   const createTile = React.useCallback(
     (position: [number, number], value: number) => {
@@ -120,24 +120,24 @@ export const useGame = () => {
           mergeCount++;
 
           updateTile(tile);
-        }
+        } else {
+          const tile: TileMeta = {
+            ...curTile,
+            position: indexToPosition(
+              calculateFirstFreeIndex(
+                index,
+                nonEmptyTileIndex,
+                mergeCount,
+                tileCount - 1
+              )
+            ),
+          }
 
-        const tile: TileMeta = {
-          ...curTile,
-          position: indexToPosition(
-            calculateFirstFreeIndex(
-              index,
-              nonEmptyTileIndex,
-              mergeCount,
-              tileCount - 1
-            )
-          ),
-        }
+          prevTile = tile;
 
-        prevTile = tile;
-
-        if (didTileMove(curTile, tile)) {
-          updateTile(tile);
+          if (didTileMove(curTile, tile)) {
+            updateTile(tile);
+          }
         }
       });
     }
@@ -259,18 +259,18 @@ export const useGame = () => {
     move(retrieveTileIdsByColumn, calculateFirstFreeIndex);
   }
 
-  useEffect(() => {
-    if (isInitalRender.current) {
-      createTile([0, 1], 2);
-      createTile([0, 2], 2);
-      isInitalRender.current = false;
-      return;
+  React.useEffect(() => {
+    if (initial) {
+      generateRandomTile();
+      dispatch(uiSlice.actions.changeInitial(false));
     }
+  }, [generateRandomTile, initial, dispatch]);
 
+  React.useEffect(() => {
     if (!inMotion && hasChanged) {
       generateRandomTile();
     }
-  }, [inMotion, hasChanged, createTile, generateRandomTile]);
+  }, [inMotion, hasChanged, generateRandomTile]);
 
   const tileList = byIds.map(tileId => tiles[tileId]);
 

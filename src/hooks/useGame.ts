@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { animationDuration, tileCount } from "../config";
+import { animationDuration } from "../config";
 import { uiSlice, TileMeta } from "../store/uiSlice";
 import { useIds } from "./useIds";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,7 +8,8 @@ import {
   selectByIds,
   selectHasChanged,
   selectInMotion,
-  selectInitial
+  selectInitial,
+  selectTileCount
 } from "../store/uiSlice";
 
 export const useGame = () => {
@@ -20,6 +21,7 @@ export const useGame = () => {
   const hasChanged = useSelector(selectHasChanged);
   const inMotion = useSelector(selectInMotion);
   const initial = useSelector(selectInitial);
+  const tileCount = useSelector(selectTileCount);
 
   const createTile = React.useCallback(
     (position: [number, number], value: number) => {

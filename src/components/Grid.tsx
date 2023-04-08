@@ -1,8 +1,10 @@
 import * as React from 'react';
-import { tileCount } from "../config";
 import { Box } from "@mui/material";
+import { useSelector } from "react-redux";
+import { selectTileCount } from "../store/uiSlice";
 
 export const Grid = () => {
+  const tileCount = useSelector(selectTileCount);
 
   const renderGrid = () => {
     const length = tileCount * tileCount;

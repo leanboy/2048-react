@@ -1,10 +1,11 @@
 import * as React from 'react';
-import {selectScore, uiSlice} from "../store/uiSlice";
+import {selectScore, selectTileCount, uiSlice} from "../store/uiSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {Button, Stack, Typography } from "@mui/material";
-import {boardMargin, tileCount, tileTotalWidth} from "../config";
+import {boardMargin, tileTotalWidth} from "../config";
 
 export const ButtonGroup = () => {
+  const tileCount = useSelector(selectTileCount);
   const containerWidth = tileCount * tileTotalWidth;
   const boardWidth = containerWidth + boardMargin;
 

@@ -19,6 +19,7 @@ export interface TileState {
 
 export interface UiState {
   tileState: TileState;
+  tileCount: number;
   history: TileState[];
   initial: boolean;
 }
@@ -33,6 +34,7 @@ const initialTileState: TileState = {
 
 const initialState: UiState = {
   tileState: initialTileState,
+  tileCount: 4,
   history: [],
   initial: true,
 }
@@ -41,6 +43,13 @@ export const uiSlice = createSlice({
   name: "ui",
   initialState: initialState,
   reducers: {
+    changeTileCount: (state: UiState, action: PayloadAction<number>) => {
+      state.tileCount = action.payload;
+
+      state.tileState = initialTileState;
+      state.history = [];
+      state.initial = true;
+    },
     createTile: (state: UiState, action: PayloadAction<TileMeta>) => {
       state.tileState.tiles[action.payload.id] = action.payload;
       state.tileState.byIds.push(action.payload.id);
@@ -88,6 +97,7 @@ export const uiSlice = createSlice({
   }
 });
 
+export const selectTileCount = (state: rootState) => state.ui.tileCount;
 export const selectTiles = (state: rootState) => state.ui.tileState.tiles;
 export const selectByIds = (state: rootState) => state.ui.tileState.byIds;
 export const selectHasChanged = (state: rootState) => state.ui.tileState.hasChanged;

@@ -1,7 +1,9 @@
 import * as React from 'react';
 import { usePrevProps } from "../hooks/usePrevProps";
-import { tileCount , containerWidth } from "../config";
 import { Box } from "@mui/material";
+import { tileTotalWidth } from "../config";
+import { useSelector } from "react-redux";
+import { selectTileCount } from "../store/uiSlice";
 
 interface TileProps {
   value: number;
@@ -10,6 +12,8 @@ interface TileProps {
 }
 
 export const Tile = (props: TileProps) => {
+  const tileCount = useSelector(selectTileCount);
+  const containerWidth = tileCount * tileTotalWidth;
   const { value, position, zIndex } = props;
   const [scale, setScale] = React.useState(1);
   const previousValue = usePrevProps<number>(value);

@@ -47,7 +47,7 @@ export const SelectGroup = () => {
       </Stack>
       <Stack direction={'row'} alignItems={'center'} spacing={2}>
         <Typography variant={'h5'}>
-          {'Max Value:'}
+          {'Max value:'}
         </Typography>
         <Select
           value={maxValue}

@@ -1,15 +1,18 @@
 import * as React from 'react';
 import {MenuItem, Select, Stack, Typography} from "@mui/material";
-import { uiSlice} from "../store/uiSlice";
-import {useDispatch} from "react-redux";
+import { uiSlice, selectTileCount, selectMaxGeneratedValue } from "../store/uiSlice";
+import {useDispatch, useSelector} from "react-redux";
 import {animationDuration} from "../config";
 
 export const SelectGroup = () => {
   const countSelectArr: number[] = [4, 5, 6];
   const maxValArr: number[] = [2, 4, 8, 16];
 
-  const [tilePerRow, setTilePerRow] = React.useState<number>(countSelectArr[0]);
-  const [maxValue, setMaxValue] = React.useState<number>(maxValArr[1]);
+  const tileCount = useSelector(selectTileCount);
+  const maxVal = useSelector(selectMaxGeneratedValue);
+
+  const [tilePerRow, setTilePerRow] = React.useState<number>(tileCount);
+  const [maxValue, setMaxValue] = React.useState<number>(maxVal);
   const dispatch = useDispatch();
 
   const preventFocus = () => {

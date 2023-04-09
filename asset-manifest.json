@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "//leanboy.github.io/2048-react/static/css/main.b3205689.css",
+    "main.js": "//leanboy.github.io/2048-react/static/js/main.42013f61.js",
+    "index.html": "//leanboy.github.io/2048-react/index.html",
+    "main.b3205689.css.map": "//leanboy.github.io/2048-react/static/css/main.b3205689.css.map",
+    "main.42013f61.js.map": "//leanboy.github.io/2048-react/static/js/main.42013f61.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.b3205689.css",
+    "static/js/main.42013f61.js"
+  ]
+}

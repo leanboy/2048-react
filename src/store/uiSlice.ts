@@ -1,17 +1,17 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction, Middleware } from "@reduxjs/toolkit";
 import { rootState } from "./";
 
 export interface TileMeta {
-  id: number;
+  id: string;
   position: [number, number];
   value: number;
 }
 
 export interface TileState {
   tiles: {
-    [key: number]: TileMeta;
+    [key: string]: TileMeta;
   };
-  byIds: number[];
+  byIds: string[];
   hasChanged: boolean;
   inMotion: boolean;
   score: number;
@@ -33,7 +33,7 @@ const initialTileState: TileState = {
   score: 0,
 }
 
-const initialState: UiState = {
+const initialState: UiState = localStorage.getItem("2048_state") ? JSON.parse(localStorage.getItem("2048_state") as string).ui : {
   tileState: initialTileState,
   tileCount: 4,
   maxGeneratedValue: 4,
@@ -81,7 +81,7 @@ export const uiSlice = createSlice({
         },
       };
       state.tileState.byIds = state.tileState.byIds.filter(id => id !== source.id);
-      state.tileState.score += source.value;
+      state.tileState.score += source.value * 2;
     },
     startMove: (state: UiState) => {
       state.tileState.inMotion = true;
@@ -105,6 +105,12 @@ export const uiSlice = createSlice({
     }
   }
 });
+
+export const localStorageMiddleware: Middleware = store => next => action => {
+  const result = next(action);
+  localStorage.setItem("2048_state", JSON.stringify(store.getState()));
+  return result;
+}
 
 export const selectTileCount = (state: rootState) => state.ui.tileCount;
 export const selectMaxGeneratedValue = (state: rootState) => state.ui.maxGeneratedValue;

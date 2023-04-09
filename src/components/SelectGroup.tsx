@@ -2,6 +2,7 @@ import * as React from 'react';
 import {MenuItem, Select, Stack, Typography} from "@mui/material";
 import { uiSlice} from "../store/uiSlice";
 import {useDispatch} from "react-redux";
+import {animationDuration} from "../config";
 
 export const SelectGroup = () => {
   const countSelectArr: number[] = [4, 5, 6];
@@ -11,14 +12,24 @@ export const SelectGroup = () => {
   const [maxValue, setMaxValue] = React.useState<number>(maxValArr[1]);
   const dispatch = useDispatch();
 
+  const preventFocus = () => {
+    setTimeout(() => {
+      (document.activeElement as HTMLElement).blur();
+    }, animationDuration);
+  }
+
   const handleCountSelectChange = (e: any) => {
     setTilePerRow(e.target.value);
     dispatch(uiSlice.actions.changeTileCount(e.target.value));
+
+    preventFocus();
   };
 
   const handleMaxValSelectChange = (e: any) => {
     setMaxValue(e.target.value);
     dispatch(uiSlice.actions.changeMaxGeneratedValue(e.target.value));
+
+    preventFocus();
   }
 
   return (

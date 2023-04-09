@@ -17,7 +17,7 @@ export const Board = (props: BoardProps) => {
   const boardWidth = containerWidth + boardMargin;
 
   const tileList = tiles.map(({ id, ...restProps }) => (
-    <Tile key={`tile-${id}`} {...restProps} zIndex={id} />
+    <Tile key={`tile-${id}`} {...restProps} />
   ));
 
   return (

@@ -8,13 +8,12 @@ import { selectTileCount } from "../store/uiSlice";
 interface TileProps {
   value: number;
   position: [number, number];
-  zIndex: number;
 }
 
 export const Tile = (props: TileProps) => {
   const tileCount = useSelector(selectTileCount);
   const containerWidth = tileCount * tileTotalWidth;
-  const { value, position, zIndex } = props;
+  const { value, position } = props;
   const [scale, setScale] = React.useState(1);
   const previousValue = usePrevProps<number>(value);
 
@@ -34,7 +33,6 @@ export const Tile = (props: TileProps) => {
   }
 
   const style = {
-    zIndex,
     top: positionToPixels(position[1]),
     left: positionToPixels(position[0]),
     transform: `scale(${scale})`,

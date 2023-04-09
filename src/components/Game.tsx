@@ -31,6 +31,13 @@ export const Game = () => {
     }
   };
 
+  const keyDownNotScrolling = (e: KeyboardEvent) => {
+    const keys = ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"];
+    if (keys.includes(e.code)) {
+      e.preventDefault();
+    }
+  }
+
   const throttledHandleKeyDown = useThrottledCallback(
     handleKeyDown,
     animationDuration,
@@ -39,9 +46,11 @@ export const Game = () => {
 
   React.useEffect(() => {
     window.addEventListener("keydown", throttledHandleKeyDown);
+    window.addEventListener("keydown", keyDownNotScrolling);
 
     return () => {
       window.removeEventListener("keydown", throttledHandleKeyDown);
+      window.removeEventListener("keydown", keyDownNotScrolling);
     };
   }, [throttledHandleKeyDown]);
 

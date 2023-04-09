@@ -9,13 +9,13 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background: #faf8ef;
   color: #776e65;
-  font-size: $pixel-size * 2.25;
-  line-height: $pixel-size * 3.5;
 }
 
 .App {
-  max-width: $pixel-size * 60;
-  margin: $pixel-size * 10 auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .board {
@@ -40,8 +40,8 @@ body {
   border-radius: $pixel-size * 0.5;
   font-weight: bold;
   text-align: center;
-  font-size: $pixel-size *6;
-  line-height: 2.1;
+  font-size: $pixel-size * 5.5;
+  line-height: 2.2;
   transition-property: left, top, transform;
   transition-duration: 200ms, 200ms, 200ms;
   transform: scale(1);

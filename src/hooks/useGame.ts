@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { animationDuration } from "../config";
 import { uiSlice, TileMeta } from "../store/uiSlice";
-import { useIds } from "./useIds";
 import { useDispatch, useSelector } from "react-redux";
+import {v4 as uuidv4} from 'uuid';
 import {
   selectTiles,
   selectByIds,
@@ -14,7 +14,6 @@ import {
 } from "../store/uiSlice";
 
 export const useGame = () => {
-  const [nextId] = useIds();
   const dispatch = useDispatch();
 
   const tiles = useSelector(selectTiles);
@@ -27,8 +26,8 @@ export const useGame = () => {
 
   const createTile = React.useCallback(
     (position: [number, number], value: number) => {
-      dispatch(uiSlice.actions.createTile({ id: nextId(), position, value }));
-    }, [nextId]);
+      dispatch(uiSlice.actions.createTile({ id: uuidv4(), position, value }));
+    }, [dispatch]);
 
   const throttledMergeTile = (source: TileMeta, destination: TileMeta) => {
     setTimeout(() => {
@@ -281,7 +280,7 @@ export const useGame = () => {
     if (!inMotion && hasChanged) {
       generateRandomTile(maxGeneratedValue);
     }
-  }, [inMotion, hasChanged, generateRandomTile]);
+  }, [inMotion, hasChanged, generateRandomTile, maxGeneratedValue]);
 
   const tileList = byIds.map(tileId => tiles[tileId]);
 

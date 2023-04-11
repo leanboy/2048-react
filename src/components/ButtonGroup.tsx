@@ -3,6 +3,7 @@ import {
   selectScore,
   selectTileCount,
   selectScoreAdded,
+  selectInMotion,
   uiSlice
 } from "../store/uiSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,6 +13,7 @@ import {boardMargin, tileTotalWidth} from "../config";
 export const ButtonGroup = () => {
   const tileCount = useSelector(selectTileCount);
   const scoreAdded = useSelector(selectScoreAdded);
+  const inMotion = useSelector(selectInMotion);
 
   const [isAnimating, setIsAnimating] = React.useState(false);
   const [initial, setInitial] = React.useState(true);
@@ -23,11 +25,12 @@ export const ButtonGroup = () => {
   const score = useSelector(selectScore);
 
   React.useEffect(() => {
-    if (scoreAdded) {
+    if (inMotion) {
+      setIsAnimating(false);
+    } else if (scoreAdded) {
       setIsAnimating(true);
-      setTimeout(() => setIsAnimating(false), 1000);
     }
-  }, [scoreAdded]);
+  }, [inMotion, scoreAdded]);
 
   React.useEffect(() => {
     if (initial) {
@@ -49,7 +52,7 @@ export const ButtonGroup = () => {
         className="button"
         variant="contained"
         onClick={handleUndoClick}
-        sx={{backgroundColor: "#8f7a66", color: "f9f6f2", textTransform: 'none', "&:hover": {backgroundColor: "#776e65"}}}
+        sx={{backgroundColor: "#8f7a66", color: "#f9f6f2", textTransform: 'none', "&:hover": {backgroundColor: "#776e65"}}}
       >
         <Typography variant={'h5'} fontWeight={'bold'}>
           Undo
@@ -73,7 +76,7 @@ export const ButtonGroup = () => {
         className="button"
         variant="contained"
         onClick={handleRestartClick}
-        sx={{backgroundColor: "#8f7a66", color: "f9f6f2", textTransform: 'none', "&:hover": {backgroundColor: "#776e65"}}}
+        sx={{backgroundColor: "#8f7a66", color: "#f9f6f2", textTransform: 'none', "&:hover": {backgroundColor: "#776e65"}}}
       >
         <Typography variant={'h5'} fontWeight={'bold'}>
           Restart

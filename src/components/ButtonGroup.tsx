@@ -7,7 +7,7 @@ import {
 } from "../store/uiSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Stack, Typography } from "@mui/material";
-import {animationDuration, boardMargin, tileTotalWidth} from "../config";
+import {boardMargin, tileTotalWidth} from "../config";
 
 export const ButtonGroup = () => {
   const tileCount = useSelector(selectTileCount);

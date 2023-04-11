@@ -75,13 +75,13 @@ body {
 }
 
 .score-addition-animation {
-    position: absolute;
-    z-index: 3;
-    font-size: $pixel-size * 3;
-    color: #776e65;
-    animation: fade-out-up 1s ease-in-out forwards;
+  position: absolute;
+  z-index: 3;
+  font-size: $pixel-size * 3;
+  color: #776e65;
+  animation: fade-out-up 1s ease-in-out forwards;
 }
 
 .score-addition {
-    display: none;
+  display: none;
 }

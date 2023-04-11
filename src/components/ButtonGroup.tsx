@@ -1,16 +1,39 @@
 import * as React from 'react';
-import {selectScore, selectTileCount, uiSlice} from "../store/uiSlice";
-import {useDispatch, useSelector} from "react-redux";
-import {Button, Stack, Typography } from "@mui/material";
-import {boardMargin, tileTotalWidth} from "../config";
+import {
+  selectScore,
+  selectTileCount,
+  selectScoreAdded,
+  uiSlice
+} from "../store/uiSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { Button, Stack, Typography } from "@mui/material";
+import {animationDuration, boardMargin, tileTotalWidth} from "../config";
 
 export const ButtonGroup = () => {
   const tileCount = useSelector(selectTileCount);
+  const scoreAdded = useSelector(selectScoreAdded);
+
+  const [isAnimating, setIsAnimating] = React.useState(false);
+  const [initial, setInitial] = React.useState(true);
+
   const containerWidth = tileCount * tileTotalWidth;
   const boardWidth = containerWidth + boardMargin;
 
   const dispatch = useDispatch();
   const score = useSelector(selectScore);
+
+  React.useEffect(() => {
+    if (scoreAdded) {
+      setIsAnimating(true);
+      setTimeout(() => setIsAnimating(false), 1000);
+    }
+  }, [scoreAdded]);
+
+  React.useEffect(() => {
+    if (initial) {
+      setTimeout(() => setInitial(false), 1000);
+    }
+  }, []);
 
   const handleUndoClick = () => {
     dispatch(uiSlice.actions.undo());
@@ -38,6 +61,12 @@ export const ButtonGroup = () => {
         </Typography>
         <Typography variant={'h4'} fontWeight={'bold'} color={'#fff'}>
           {score}
+        </Typography>
+        <Typography
+          variant={'h5'} fontWeight={'bold'} color={'#776e65'}
+          className={`score-addition${isAnimating ? '-animation' : ''}`}
+        >
+          {`+${initial ? score: scoreAdded}`}
         </Typography>
       </Stack>
       <Button

@@ -22,6 +22,7 @@ export interface UiState {
   tileCount: number;
   maxGeneratedValue: number;
   history: TileState[];
+  scoreAdded: number;
   initial: boolean;
 }
 
@@ -38,6 +39,7 @@ const initialState: UiState = localStorage.getItem("2048_state") ? JSON.parse(lo
   tileCount: 4,
   maxGeneratedValue: 4,
   history: [],
+  scoreAdded: 0,
   initial: true,
 }
 
@@ -88,6 +90,7 @@ export const uiSlice = createSlice({
     },
     endMove: (state: UiState) => {
       state.tileState.inMotion = false;
+      state.scoreAdded = state.tileState.score - state.history[state.history.length - 1].score;
     },
     undo: (state: UiState) => {
       if (state.history.length > 1) {
@@ -120,3 +123,4 @@ export const selectHasChanged = (state: rootState) => state.ui.tileState.hasChan
 export const selectInMotion = (state: rootState) => state.ui.tileState.inMotion;
 export const selectInitial = (state: rootState) => state.ui.initial;
 export const selectScore = (state: rootState) => state.ui.tileState.score;
+export const selectScoreAdded = (state: rootState) => state.ui.scoreAdded;

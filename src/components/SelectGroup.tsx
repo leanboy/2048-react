@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {MenuItem, Select, Stack, Typography} from "@mui/material";
+import { MenuItem, Select, Stack, Typography } from "@mui/material";
 import { uiSlice, selectTileCount, selectMaxGeneratedValue } from "../store/uiSlice";
-import {useDispatch, useSelector} from "react-redux";
-import {animationDuration} from "../config";
+import { useDispatch, useSelector } from "react-redux";
+import { animationDuration } from "../config";
 
 export const SelectGroup = () => {
   const countSelectArr: number[] = [4, 5, 6];

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { animationDuration } from "../config";
 import { uiSlice, TileMeta } from "../store/uiSlice";
 import { useDispatch, useSelector } from "react-redux";
-import {v4 as uuidv4} from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 import {
   selectTiles,
   selectByIds,

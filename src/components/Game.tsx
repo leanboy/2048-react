@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useGame } from "../hooks/useGame";
 import { Board } from "./Board";
 import { useThrottledCallback } from "use-debounce";
-import {useDispatch} from "react-redux";
+import { useDispatch } from "react-redux";
 import { animationDuration } from "../config";
 import { uiSlice } from "../store/uiSlice";
 

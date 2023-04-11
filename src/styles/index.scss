@@ -62,3 +62,26 @@ body {
     background: rgba(238, 228, 218, 0.35);
   }
 }
+
+@keyframes fade-out-up {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-70px);
+  }
+}
+
+.score-addition-animation {
+    position: absolute;
+    z-index: 3;
+    font-size: $pixel-size * 3;
+    color: #776e65;
+    animation: fade-out-up 1s ease-in-out forwards;
+}
+
+.score-addition {
+    display: none;
+}

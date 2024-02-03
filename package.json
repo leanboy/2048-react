@@ -2,7 +2,7 @@
   "name": "2048-react",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://leanboy.github.io/2048-react/",
+  "homepage": "https://qyunhuang.github.io/2048-react/",
   "dependencies": {
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",

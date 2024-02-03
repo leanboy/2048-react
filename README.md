@@ -14,6 +14,20 @@ This is a web-based implementation of the classic 2048 game with additional feat
 - **React**
 - **Redux**
 - **Material-UI (MUI)**
+  
+### Storing State in localStorage
+
+The game ensures easy restoration of game state by storing the initial game state in localStorage. Additionally, a Redux middleware is employed to automatically update the localStorage whenever the Redux state undergoes a change. The middleware logic is as follows:
+
+```javascript
+export const localStorageMiddleware: Middleware = store => next => action => {
+  const result = next(action);
+  localStorage.setItem("2048_state", JSON.stringify(store.getState()));
+  return result;
+}
+```
+
+This middleware ensures that every time the Redux state is modified, the updated state is stored in the browser's localStorage, allowing for easy restoration of the game state.
 
 ### Deployment
 
